@@ -118,7 +118,8 @@ func getproccount() int32 {
 	if n == 0 {
 		n = 1
 	}
-	return n
+	return 1
+	//return n
 }
 
 // Clone, the Linux rfork.
@@ -573,7 +574,14 @@ func tgkill(tgid, tid, sig int)
 
 // signalM sends a signal to mp.
 func signalM(mp *m, sig int) {
-	tgkill(getpid(), int(mp.procid), sig)
+	if sig != 23 {
+ 		print("signalM ", sig, "\n")
+		tgkill(getpid(), int(mp.procid), sig)
+	}  // else {
+ 	//	print("## signalM 23 ##\n")
+	//	tgkill(getpid(), int(mp.procid), sig)
+	// }
+	
 }
 
 // validSIGPROF compares this signal delivery's code against the signal sources
