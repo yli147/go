@@ -5594,7 +5594,7 @@ func sysmon() {
 		}
 		// poll network if not polled for more than 10ms
 		lastpoll := sched.lastpoll.Load()
-		if netpollinited() && lastpoll != 0 && lastpoll+10*1000*1000 < now {
+		if netpollinited() && lastpoll != 0 && lastpoll+1000*1000*1000 < now {
 			sched.lastpoll.CompareAndSwap(lastpoll, now)
 			list := netpoll(0) // non-blocking - returns list of goroutines
 			if !list.empty() {
@@ -5667,7 +5667,7 @@ type sysmontick struct {
 
 // forcePreemptNS is the time slice given to a G before it is
 // preempted.
-const forcePreemptNS = 10 * 1000 * 1000 // 10ms
+const forcePreemptNS = 1000 * 1000 * 1000 // 10ms
 
 func retake(now int64) uint32 {
 	n := 0
@@ -5711,7 +5711,7 @@ func retake(now int64) uint32 {
 			// On the one hand we don't want to retake Ps if there is no other work to do,
 			// but on the other hand we want to retake them eventually
 			// because they can prevent the sysmon thread from deep sleep.
-			if runqempty(pp) && sched.nmspinning.Load()+sched.npidle.Load() > 0 && pd.syscallwhen+10*1000*1000 > now {
+			if runqempty(pp) && sched.nmspinning.Load()+sched.npidle.Load() > 0 && pd.syscallwhen+1000*1000*1000 > now {
 				continue
 			}
 			// Drop allpLock so we can take sched.lock.

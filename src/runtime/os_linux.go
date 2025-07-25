@@ -118,8 +118,8 @@ func getproccount() int32 {
 	if n == 0 {
 		n = 1
 	}
-	return 1
-	//return n
+//	return 1
+	return n
 }
 
 // Clone, the Linux rfork.
@@ -577,10 +577,10 @@ func signalM(mp *m, sig int) {
 	if sig != 23 {
  		print("signalM ", sig, "\n")
 		tgkill(getpid(), int(mp.procid), sig)
-	}  // else {
+	}  else {
  	//	print("## signalM 23 ##\n")
-	//	tgkill(getpid(), int(mp.procid), sig)
-	// }
+		tgkill(getpid(), int(mp.procid), sig)
+	}
 	
 }
 
